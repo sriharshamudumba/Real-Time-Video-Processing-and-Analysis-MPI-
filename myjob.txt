@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#SBATCH --job-name=license_plate_detection  # Job name
+#SBATCH --output=res_%j.txt                # Output file
+#SBATCH --error=err_%j.txt                 # Error file
+#SBATCH --ntasks=16                        # Total number of tasks
+#SBATCH --nodes=4                          # Number of nodes requested
+#SBATCH --ntasks-per-node=4                # Number of tasks per node
+#SBATCH --cpus-per-task=1                  # Number of cores per task
+#SBATCH --mem=4GB                          # Memory per node (change as needed)
+#SBATCH --time=02:00:00                    # Time limit hrs:min:sec
+#SBATCH --partition=broadwl                # Partition to submit to (specific to your cluster environment)
+#SBATCH --account=s2024.math.525.1    # Account to use (adjust as necessary)
+
+# Load the module for OpenCV and EasyOCR or any other required modules
+module load opencv
+module load python
+module load mpi
+
+# Run the MPI job
+mpirun -np 16 python /path/to/your_script.py
+
+# Note: Adjust the paths to your actual environment and application path
