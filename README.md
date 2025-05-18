@@ -1,16 +1,56 @@
-# Real-Time-Video-Processing-and-Analysis-MPI-
-Serial and parallel implementation (using MPI) for fast processing of video input for license plate detection 
+# Real-Time Vehicle Number Plate Detection System (MPI + Serial)
 
-. Introduction:
- The capacity to detect license plates efficiently and accurately in video streams is pivotal for applications such as automated toll collection, traffic monitoring, and security enforcement. With increasing video resolution and data volumes, the computational demands have also escalated, making traditional serial processing methods less effective for real-time applications. This project aims to investigate and demonstrate the efficacy of parallel computing techniques, specifically using the Message Passing Interface (MPI) on Nova clusters, to enhance the performance of video processing tasks involved in license plate detection. The primary goal of this project is to enhance processing efficiency by leveraging parallel computing resources, thereby reducing the time required to process video streams compared to traditional serial methods. The project also aims to ensure that the parallel processing method maintains or enhances the accuracy of license plate detection compared to serial methods, despite the complexities involved in managing distributed computations. Moreover, the project will provide a thorough comparative analysis of serial and parallel processing methods, focusing on differences in processing time, resource utilization, and potential bottlenecks in both approaches.
- 
- Methodology:
- To achieve these goals, the project will first implement a serial version of the video processing system to serve as a baseline for evaluating the effectiveness of the parallel approach. Subsequently, this serial approach will be adapted to a parallel processing model using MPI, involving the distribution of video processing tasks across multiple nodes within Nova clusters. The performance of both models will be measured and compared in terms of processing speed, accuracy of license plate detection, and resource utilization, with special attention given to the overhead introduced by parallelization and its impact on overall efficiency.
- 
- Technical Setup and process overflow:
- The technical execution will utilize the Nova clusters, which are equipped with MPI, to perform the parallel processing tasks. This setup will include configuring the computational environment, managing data distribution, and synchronizing processes to ensure consistent and reliable results across different nodes.
-The initial step in the workflow involves loading the video into the system using OpenCV's cv2.VideoCapture() function. This function accesses the video file from a specified path, creating a video capture object that allows for frame-by-frame processing. Following the video load, each frame is processed sequentially. This crucial step involves applying various image processing techniques to accurately detect and interpret license plates. The operations performed on each frame include converting the frame to grayscale, applying filters and enhancements for image clarity, and detecting edges that indicate the presence of license plates.
-After processing, the enhanced frames are compiled into a new video file, achieved using OpenCV’s cv2.VideoWriter() function. This function assembles the processed frames back into a video format, adhering to specified parameters such as frame size, codec, and frame rate, which can either match the input video's specifications or be optimized according to the desired output quality.
+This project implements both serial and MPI-parallelized versions of a vehicle number plate detection system using OpenCV and EasyOCR. It is designed for deployment on Nova cluster nodes or local machines.
 
-To assess the performance and efficiency of processing methods, the code is implemented in both serial and parallel configurations. The serial implementation processes the video frames one at a time on a single processor. In contrast, the parallel implementation employs MPI to distribute the task of frame processing across multiple processors within the Nova clusters, potentially reducing overall processing time by handling multiple frames concurrently.
+---
 
+##  Introduction
+
+The capacity to detect license plates efficiently and accurately in video streams is pivotal for applications such as automated toll collection, traffic law enforcement, smart parking systems, and urban surveillance.
+
+---
+
+##  Methodology
+
+The project includes:
+- A **serial implementation** for baseline performance
+- A **parallel MPI implementation** to achieve scalability and runtime reduction
+
+---
+
+##  Technical Stack
+
+- **Languages**: Python
+- **Libraries**: OpenCV, EasyOCR, NumPy, mpi4py
+- **Environment**: Nova HPC Cluster with MPI
+
+---
+
+##  Workflow Overview
+
+1. **Video Load**: Frames are extracted using `cv2.VideoCapture()`
+2. **Preprocessing**: Each frame undergoes grayscale conversion, Gaussian blur, Canny edge detection, and dilation.
+3. **OCR**: EasyOCR is used to detect and decode text from candidate license plate regions.
+4. **Annotation**: Detected plates are highlighted with bounding boxes and annotated with text.
+5. **Output**: Results are written to an annotated video and a text file.
+
+---
+
+##  Performance
+
+| Video Length | Serial Time | Parallel Time (16 MPI Ranks) |
+|--------------|-------------|-------------------------------|
+| 10.5 sec     | 602.4 sec   | 54.3 sec                      |
+| 1.5 min      | 1002.34 sec | 106.21 sec                    |
+| 2.45 min     | 2435.55 sec | 132.4 sec                     |
+
+Parallelization with MPI achieved over **18x speedup** on large video files.
+
+---
+
+##  Running the Code
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
